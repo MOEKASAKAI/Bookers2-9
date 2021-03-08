@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'chats/show'
+  get 'user_rooms/show'
+  get 'rooms/show'
+  get 'rooms/create'
   devise_for :users, :controllers => {
     :registrations => 'users/registrations'
   }
@@ -15,6 +19,13 @@ Rails.application.routes.draw do
       get :following, :followers
     end
   end
+  
+  # ————DM機能—————————————————————————————————
+  resources :rooms, only: [:show, :create]
+  resources :user_rooms, only: [:show, :create]
+  get 'chat/:id' => 'chats#show', as: 'chat'
+  resources :chats, only: [:create]
+  # ———————————————————————————————————————————
   resources :books, only: [:new, :create, :index, :show, :edit, :update, :destroy] do
     resource :favorites, only: [:create, :destroy]
     resources :book_comments, only: [:create, :destroy]

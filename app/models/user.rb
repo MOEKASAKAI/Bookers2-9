@@ -12,7 +12,13 @@ class User < ApplicationRecord
   has_many :following_user, through: :follower, source: :followed  #自分がフォローしている人
   has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :follower_user, through: :followed, source: :follower　#自分をフォローしている人
-
+  
+  # ———DM機能・roomのアソシエーション————————————
+  has_many :user_rooms, dependent: :destroy
+  has_many :rooms, through: :user_rooms
+  # ———DM機能・chatのアソシエーション————————————
+  has_many :chats, dependent: :destroy
+  # —————————————————————————————————————————————
   attachment :profile_image
 
   validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 20 }
